@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+	function setupGetPhone() {
+					$.ajax({url : "/project_test/ServletTest",
+					data : {Phone : $("#userInput").val()},
+					type : 'get',
+					success : function(result) {
+
+						if ("#userInput" != "") {
+							console.log(result);
+							
+							var banner = "<tr><th>First Name:</th><th>Last Name:</th><th>Address:</th><th>Last Visited:</th></tr>";
+							$("#searchResults").append(banner)
+							var jsonObj = JSON.parse(result);
+							for (var i = 0; i < jsonObj.length; i++) {
+								var resultName = jsonObj[i].firstName
+								var resultLast = jsonObj[i].lastName
+								var resultAddress = jsonObj[i].address
+								var resultDate = jsonObj[i].date
+								var finalResults = 
+										"<tr><td>" + resultName
+										+ "</td><td>" + resultLast
+										+ "</td><td>" + resultAddress
+										+ "</td><td>" + resultDate
+										+ "</td></tr>";
+
+								$("#searchResults").append(finalResults)
+							}
+						}
+					}
+				});
+	}
+	function setupGetAllPatrons() {
+
+		
+				$.ajax({
+					url : "/project_test/ServletTest",
+					data : {getall : 'true'},
+					type : 'get',
+					success : function(getuser) {
+						console.log(getuser);
+
+						var banner2 = "<tr><th>MemberID</th><th>First Name</th><th>Last Name</th><th>Phone</th><th>Address</th><th>Last Visited</th></tr>";
+						$("#everyUser").append(banner2)
+						var jsonObject = JSON.parse(getuser);
+
+						for (var i = 0; i < jsonObject.length; i++) {
+							var resultID1 = jsonObject[i].memberID
+							var resultName1 = jsonObject[i].firstName
+							var resultLast1 = jsonObject[i].lastName
+							var resultAddress1 = jsonObject[i].address
+							var resultPhone1 = jsonObject[i].phone
+							var resultDate1 = jsonObject[i].date
+							var finalData1 = "<tr><td>" + resultID1
+									+ "</td><td>" + resultName1 + "</td><td>"
+									+ resultLast1 + "</td><td>" + resultPhone1
+									+ "</td><td>" + resultAddress1
+									+ "</td><td>" + resultDate1 + "</td></tr>";
+
+							$("#everyUser").append(finalData1)
+						}
+					}
+				});
+	}
+</script>
+<script src="/project_test/js/jquery-1.12.3.js"></script>
+<meta charset="ISO-8859-1">
+<title>Bharatiya Temple Library Management Database</title>
+</head>
+<body bgcolor="white">
+		<div class="jumbotron">
+   <img src="http://www.troy-temple.org/images/temple/logo_full.jpg" class="img-rounded" alt="Temple Logo" >
+   <br>
+   <br>
+  <p>Welcome to the Library Management Database</p>
+</div>
+	<br>
+		<h4>If a member, please enter phone number:</h4>
+	<div class="form-group">
+  <input style="width: 15%" id="userInput" name="fname"  class="form-control" id="focusedInput" type="text" placeholder="Phone">
+</div>
+	<br>
+
+	<a id="usersbyphone" class="btn btn-success"onclick="setupGetPhone()">Get Results</a>
+	<br>
+	<br>
+	<table id="searchResults" style="width: 50%">
+
+	</table>
+	<br>
+	<form class="form-horizontal" method="post"
+		action="/project_test/ServletTest">
+		<fieldset>
+			<legend>New Member? Register Below</legend>
+			<div class="form-group" style="width: 50%">
+				<label for="inputFirstName" class="col-sm-2 control-label"></label>
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="inputFirstName"
+						name="firstname" placeholder="First Name">
+				</div>
+			</div>
+			<div class="form-group" style="width: 50%">
+				<label for="inputLastName" class="col-sm-2 control-label"></label>
+				<div class="col-lg-10">
+					<input type="text" class="form-control" id="inputLastName"
+						name="lastname" placeholder="Last Name">
+						</div>
+						</div>
+					<div class="form-group"style="width: 50%">
+					
+						<label for="inputAddress" class="col-sm-2 control-label"></label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" id="inputAddress"
+								name="Address" placeholder="Address">
+						</div>
+					</div>
+					<div class="form-group"style="width: 50%">
+						<label for="inputPhone" class="col-sm-2 control-label"></label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control" id="inputPhone"
+								name="Phone" placeholder="Phone">
+						</div>
+					</div>
+					<div class="form-group" style="width: 50%">
+                           <div class="col-sm-offset-2 col-sm-2">
+					<button type="submit" class="btn btn-primary">Register</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+	<br>
+	<h4>Administrative Tools</h4>
+		<button id="allUsers" onclick="setupGetAllPatrons()" class="btn btn-success">Get All Users</button>
+	<script src="js/bootstrap.min.js"></script>
+	<table id= "everyUser"  style="width: 75%" align="center" class="table table-striped table-hover">	
+  </tbody>
+</table> 
+</body>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+</html>
